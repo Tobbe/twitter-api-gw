@@ -1,5 +1,5 @@
 {
-  "name": "Twitter API HTTP gateway",
+  "name": "twitter-api-gw",
   "version": "0.0.1",
   "description": "Gets tweets from Twitter over HTTP",
   "keywords": [
