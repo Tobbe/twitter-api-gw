@@ -2,16 +2,8 @@ var express = require('express');
 var OAuth2  = require('oauth').OAuth2;
 var Twitter = require('twitter');
 
-var ipaddress = process.env.OPENSHIFT_NODEJS_IP || process.env.OPENSHIFT_INTERNAL_IP;
+var ipaddress = process.env.OPENSHIFT_NODEJS_IP || process.env.OPENSHIFT_INTERNAL_IP || "127.0.0.1";
 var port = process.env.OPENSHIFT_NODEJS_PORT || process.env.OPENSHIFT_INTERNAL_PORT || 8080;
-
-if (typeof ipaddress === "undefined") {
-    //  Log errors on OpenShift but continue w/ 127.0.0.1 - this
-    //  allows us to run/test the app locally.
-    console.warn('No OPENSHIFT_*_IP var, using 127.0.0.1');
-    ipaddress = "127.0.0.1";
-}
-
 var app = express();
 
 app.get('/', function (req, res) {
