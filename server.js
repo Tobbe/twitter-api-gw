@@ -32,7 +32,7 @@ oauth2.getOAuthAccessToken('', access_options, function (err, access_token) {
 app.get('/', function (req, res) {
     if (!client) return;
 
-    client.get('search/tweets', {q: 'to:SH_IoT'}, function(error, tweets, response) {
+    client.get('search/tweets', {q: 'to:SH_IoT'}, function(err, tweets, response) {
         if (err) throw err;
 
         var texts = [];
