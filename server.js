@@ -47,7 +47,7 @@ app.get('/', function (req, res) {
                 texts.push(status.text);
             });
             console.log(texts);
-            res.send("<html><body><h1>Tweets to @SH_IoT</h1>" + texts + "</body></html>");
+            res.json(texts);
         });
     });
 });
