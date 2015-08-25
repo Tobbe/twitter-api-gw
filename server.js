@@ -1,5 +1,4 @@
 var express = require('express');
-var fs      = require('fs');
 var OAuth2  = require('oauth').OAuth2;
 var Twitter = require('twitter');
 
@@ -19,8 +18,6 @@ app.get('/', function (req, res) {
     var twitterConsumerKey = process.env.TWITTER_CONSUMER_KEY;
     var twitterConsumerSecret = process.env.TWITTER_CONSUMER_SECRET;
 
-    var https = require('https');
-
     var oauth2 = new OAuth2(
         twitterConsumerKey,
         twitterConsumerSecret,
@@ -31,8 +28,6 @@ app.get('/', function (req, res) {
 
     var access_options = { 'grant_type': 'client_credentials' };
     oauth2.getOAuthAccessToken('', access_options, function (err, access_token) {
-        console.log(access_token); //string that we can use to authenticate request
-
         var client = new Twitter({
             consumer_key: process.env.TWITTER_CONSUMER_KEY,
             consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
@@ -46,7 +41,6 @@ app.get('/', function (req, res) {
             tweets.statuses.forEach(function (status) {
                 texts.push(status.text);
             });
-            console.log(texts);
             res.json(texts);
         });
     });
