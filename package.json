@@ -1,35 +1,30 @@
 {
-  "name": "nodejs-Custom-Version-Sample",
-  "version": "1.0.1",
-  "description": "OpenShift Node.js Custom Version Sample Application",
+  "name": "Twitter API HTTP gateway",
+  "version": "0.0.1",
+  "description": "Gets tweets from Twitter over HTTP",
   "keywords": [
-    "OpenShift",
-    "Node.js",
-    "application",
-    "openshift"
+    "Twitter",
+    "HTTP",
+    "IoT",
+    "Internet of Things"
   ],
   "author": {
-    "name": "ramr",
-    "email": "ramr@example.org",
-    "url":  "http://www.openshift.com/"
+    "name": "Tobbe Lundberg",
+    "email": "tobbe@tlundberg.com",
+    "url": "http://tlundberg.com"
   },
-  "homepage": "http://www.openshift.com/",
-  "repository": {
-    "type": "git",
-    "url": "https://gitub.com/ramr/nodejs-custom-version-openshift"
-  },
-
+  "homepage": "http://shiot-tlundberg.rhcloud.com/",
   "engines": {
-    "node": ">= 0.6.0",
+    "node": ">= 0.12.0",
     "npm": ">= 1.0.0"
   },
-
   "dependencies": {
-    "express": "*"
+    "express": "*",
+    "oauth": "^0.9.13",
+    "twitter": "git://github.com/desmondmorris/node-twitter#master"
   },
   "devDependencies": {},
   "bundleDependencies": [],
-
   "private": true,
   "main": "server.js"
 }
