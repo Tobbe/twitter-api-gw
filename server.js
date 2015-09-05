@@ -1,6 +1,7 @@
 var express = require('express');
 var Twitter = require('twitter');
 var Tea = require('./xxtea.js');
+var nonce = require('nonce')();
 
 var ipaddress = process.env.OPENSHIFT_NODEJS_IP || process.env.OPENSHIFT_INTERNAL_IP || "127.0.0.1";
 var port = process.env.OPENSHIFT_NODEJS_PORT || process.env.OPENSHIFT_INTERNAL_PORT || 8080;
@@ -16,6 +17,7 @@ clientUser = new Twitter({
 });
 
 var texts = [];
+var nextNonce = nonce();
 
 clientUser.stream('statuses/filter', {track: '@SH_IoT'}, function(stream) {
     stream.on('data', function(tweet) {
@@ -33,16 +35,21 @@ app.get('/', function (req, res) {
     res.json(texts);
 });
 
+app.get('/nonce', function (req, res) {
+    res.send('' + nextNonce);
+});
+
 app.post('/', function (req, res) {
     if (!clientUser) return;
 
     var encryptedMessage = req.query.msg;
     var msg = Tea.decrypt(encryptedMessage, password);
-    if (msg.indexOf(password) === 0) {
-        msg = msg.substr(password.length);
+    if (msg.indexOf(nextNonce) === 0) {
+        msg = msg.substr(nextNonce.length);
         clientUser.post('statuses/update', {status: msg}, function(err, tweet, response) {
             if (err) throw err;
 
+            nextNonce = nonce();
             res.send('Tweet posted: ' + msg);
         });
     } else {

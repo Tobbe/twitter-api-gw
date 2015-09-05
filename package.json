@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "express": "*",
+    "nonce": "1.0.3",
     "twitter": "git://github.com/samlbest/node-twitter#ff14ccb1ee4cd906a4d7084da37f1f5827573937"
   },
   "devDependencies": {},
