@@ -1,8 +1,10 @@
 var express = require('express');
 var Twitter = require('twitter');
+var Tea = require('./xxtea.js');
 
 var ipaddress = process.env.OPENSHIFT_NODEJS_IP || process.env.OPENSHIFT_INTERNAL_IP || "127.0.0.1";
 var port = process.env.OPENSHIFT_NODEJS_PORT || process.env.OPENSHIFT_INTERNAL_PORT || 8080;
+var password = process.env.ENCRYPTION_PASSWORD || 'password';
 var app = express();
 var clientUser;
 
@@ -34,11 +36,18 @@ app.get('/', function (req, res) {
 app.post('/', function (req, res) {
     if (!clientUser) return;
 
-    clientUser.post('statuses/update', {status: req.query.msg}, function(err, tweet, response) {
-        if (err) throw err;
+    var encryptedMessage = req.query.msg;
+    var msg = Tea.decrypt(encryptedMessage, password);
+    if (msg.indexOf(password) === 0) {
+        msg = msg.substr(password.length);
+        clientUser.post('statuses/update', {status: msg}, function(err, tweet, response) {
+            if (err) throw err;
 
-        res.send('Tweet posted');
-    });
+            res.send('Tweet posted: ' + msg);
+        });
+    } else {
+        res.send('Wrong password');
+    }
 });
 
 var server = app.listen(port, ipaddress, function () {
