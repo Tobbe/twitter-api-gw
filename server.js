@@ -45,7 +45,7 @@ app.post('/', function (req, res) {
     var encryptedMessage = req.query.msg;
     var msg = Tea.decrypt(encryptedMessage, password);
     if (msg.indexOf(nextNonce) === 0) {
-        msg = msg.substr(nextNonce.length);
+        msg = msg.substr(('' + nextNonce).length);
         clientUser.post('statuses/update', {status: msg}, function(err, tweet, response) {
             if (err) throw err;
 
