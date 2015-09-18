@@ -24,18 +24,18 @@ Set the following environment variables:
 
 ### Sending a tweet
 
-To send a tweet you POST to http://<app URL>/?msg=<encrypted message> where
+To send a tweet you POST to `http://<app URL>/?msg=<encrypted message>` where
 <encrypted message> is the string you want to tweet, prepended by a valid
 nonce and finally encrypted with your configured password.
 
-The nonce to use is retrieved by sending a GET to http://<app URL>/nonce
+The nonce to use is retrieved by sending a GET to `http://<app URL>/nonce`
 
 The password to use is configured by setting the environment variable
 `process.env.ENCRYPTION_PASSWORD`.
 
 ### Reading tweets
 
-Reading is super simple. Just GET http://<app URL>/ and you'll get a JSON
+Reading is super simple. Just GET `http://<app URL>/` and you'll get a JSON
 list of all messages since the application was started.
 
 
@@ -45,11 +45,12 @@ Selecting a Node version to install/use
 To select the version of Node.js that you want to run, just edit or add
 a version to the .openshift/markers/NODEJS_VERSION file.
 
-    Example: To install Node.js version 0.12.5, you can run:
-       $ echo 0.12.5 >> .openshift/markers/NODEJS_VERSION
+Example: To install Node.js version 0.12.5, you can run:
 
-    Or alternatively, edit the ```.openshift/markers/NODEJS_VERSION``` file
-    in your favorite editor aka vim ;^)
+    $ echo 0.12.5 >> .openshift/markers/NODEJS_VERSION
+
+Or alternatively, edit the ```.openshift/markers/NODEJS_VERSION``` file
+in your favorite editor, aka vim ;^)
 
 Commit your changes, and push them to OpenShift
 
