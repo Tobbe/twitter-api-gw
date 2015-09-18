@@ -1,8 +1,42 @@
-Running a custom/latest Node[.js] version on Red Hat's OpenShift PaaS
-====================================================================
-This git repository is a sample Node application along with the
-"orchestration" bits to help you run the latest or a custom version
-of Node on Red Hat's OpenShift PaaS.
+Twitter API GW
+==============
+
+HTTP gateway to the Twitter API.
+
+I use it to post and read tweets from an
+[Espruino Pico](http://www.espruino.com/Pico), which does not have the CPU
+power, or specialized hardware, to do HTTPS. HTTPS is required to work with
+the twitter API.
+
+Usage
+-----
+
+### Setup
+
+Set the following environment variables:
+
+    TWITTER_CONSUMER_KEY,
+    TWITTER_CONSUMER_SECRET,
+    TWITTER_ACCESS_TOKEN_KEY,
+    TWITTER_ACCESS_TOKEN_SECRET,
+
+    ENCRYPTION_PASSWORD
+
+### Sending a tweet
+
+To send a tweet you POST to http://<app URL>/?msg=<encrypted message> where
+<encrypted message> is the string you want to tweet, prepended by a valid
+nonce and finally encrypted with your configured password.
+
+The nonce to use is retrieved by sending a GET to http://<app URL>/nonce
+
+The password to use is configured by setting the environment variable
+`process.env.ENCRYPTION_PASSWORD`.
+
+### Reading tweets
+
+Reading is super simple. Just GET http://<app URL>/ and you'll get a JSON
+list of all messages since the application was started.
 
 
 Selecting a Node version to install/use
@@ -15,65 +49,10 @@ a version to the .openshift/markers/NODEJS_VERSION file.
        $ echo 0.12.5 >> .openshift/markers/NODEJS_VERSION
 
     Or alternatively, edit the ```.openshift/markers/NODEJS_VERSION``` file
-    in your favorite editor aka vi ;^)
+    in your favorite editor aka vim ;^)
 
+Commit your changes, and push them to OpenShift
 
-The action_hooks in this application will use that NODEJS_VERSION marker
-file to download and extract that Node version if it is available on
-nodejs.org and will automatically set the paths up to use the node/npm
-binaries from that install directory.
-
-     See: .openshift/action_hooks/ for more details.
-
-    Note: The last non-blank line in the .openshift/markers/NODEJS_VERSION
-          file.determines the version it will install.
-
-
-Okay, now onto how can you get a custom Node.js version running
-on OpenShift.
-
-
-Steps to get a custom Node.js version running on OpenShift
-----------------------------------------------------------
-
-Create an account at http://openshift.redhat.com/
-
-Create a namespace, if you haven't already do so
-
-    rhc domain create <yournamespace>
-
-Create a nodejs application (you can name it anything via -a)
-
-    rhc app create -a palinode  -t nodejs-0.10
-
-Add this `github nodejs-custom-version-openshift` repository
-
-    cd palinode
-    git remote add upstream -m master git://github.com/ramr/nodejs-custom-version-openshift.git
-    git pull -s recursive -X theirs upstream master
-
-Optionally, specify the custom version of Node.js you want to run with
-(Default is v0.12.5).
-If you want to more later version of Node (example v0.12.42), you can change
-to that by just writing it to the end of the NODEJS_VERSION file and
-committing that change.
-
-    echo 0.12.42 >> .openshift/markers/NODEJS_VERSION
-    #
-    # Or alternatively, edit the .openshift/markers/NODEJS_VERSION file
-    # in your favorite editor aka vi ;^)
-    #
-    # Note: 0.12.42 doesn't exist (as yet) and is a fictitious version
-    #       mentioned here solely for demonstrative purposes.
-    #
     git commit . -m 'use Node version 0.12.42'
-
-Then push the repo to OpenShift
-
     git push
-
-That's it, you can now checkout your application at:
-
-    http://palinode-$yournamespace.rhcloud.com
-    ( See env @ http://palinode-$yournamespace.rhcloud.com/env )
 
