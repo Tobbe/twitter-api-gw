@@ -21,7 +21,7 @@ var nextNonce = nonce();
 
 clientUser.stream('statuses/filter', {track: '@SH_IoT'}, function(stream) {
     stream.on('data', function(tweet) {
-        texts.push(tweet.text);
+        texts.push({user: tweet.user.screen_name, text: tweet.text});
     });
 
     stream.on('error', function(error) {
