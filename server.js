@@ -25,6 +25,7 @@ clientUser.stream('statuses/filter', {track: '@SH_IoT'}, function(stream) {
     });
 
     stream.on('error', function(error) {
+        console.log(error);
         throw error;
     });
 });
@@ -47,7 +48,11 @@ app.post('/', function (req, res) {
     if (msg.indexOf(nextNonce) === 0) {
         msg = msg.substr(('' + nextNonce).length);
         clientUser.post('statuses/update', {status: msg}, function(err, tweet, response) {
-            if (err) throw err;
+            if (err) {
+                console.log(err);
+                res.send('Error:', err);
+                return;
+            }
 
             nextNonce = nonce();
             res.send('Tweet posted: ' + msg);
