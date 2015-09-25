@@ -63,6 +63,6 @@ app.post('/', function (req, res) {
 });
 
 var server = app.listen(port, ipaddress, function () {
-    console.log('Example app listening at http://%s:%s', ipaddress, port);
+    console.log('Server listening at http://%s:%s', ipaddress, port);
 });
 
